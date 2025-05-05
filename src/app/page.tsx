@@ -3,8 +3,6 @@ import Link from "next/link";
 import { connectDB } from "@/util/database";
 
 export default async function Home() {
-  const data = [{ title: "제목1", img: "/images/test.jpg", link: "/write" }];
-
   const client = await connectDB;
   const db = client.db("forum");
   let result = await db.collection("post").find({}).toArray();
@@ -19,7 +17,7 @@ export default async function Home() {
 
         <div className="grid grid-cols-4 gap-4">
           {result.map((item, index) => (
-            <Link href="/" key={index}>
+            <Link href={`/detail/${item._id}`} key={index}>
               <div
                 key={index}
                 className="flex flex-col items-center justify-center"
@@ -32,6 +30,7 @@ export default async function Home() {
                   className="bg-gray-200 rounded-lg"
                 />
                 <p>{item.title}</p>
+                <p>{item.content}</p>
               </div>
             </Link>
           ))}
